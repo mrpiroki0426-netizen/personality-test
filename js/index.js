@@ -4,13 +4,75 @@
 const questionsContainer = document.getElementById("questions");
 
 // 5段階の共通選択肢
+// 5段階の共通選択肢（左：A 〜 右：B）
 const likertOptions = [
-  { value: 5, label: "とてもあてはまる" },
-  { value: 4, label: "まああてはまる" },
-  { value: 3, label: "どちらともいえない" },
-  { value: 2, label: "あまりあてはまらない" },
-  { value: 1, label: "まったくあてはまらない" }
+  { value: 1, label: "" },
+  { value: 2, label: "" },
+  { value: 3, label: "" },
+  { value: 4, label: "" },
+  { value: 5, label: "" }
 ];
+
+function renderQuestions() {
+  questionsContainer.innerHTML = "";
+
+  questions.forEach((q, index) => {
+    const qDiv = document.createElement("div");
+    qDiv.className = "question";
+
+    const title = document.createElement("div");
+    title.className = "question-title";
+    title.textContent = `Q${index + 1}. ${q.text}`;
+
+    // 外枠（左右の A / B を含む）
+    const wrapper = document.createElement("div");
+    wrapper.className = "likert-row";
+
+    // 左側のラベル（A側）
+    const leftLabel = document.createElement("div");
+    leftLabel.className = "likert-side-label";
+    leftLabel.textContent = "A";
+
+    // 5つの丸ボタン部分
+    const options = document.createElement("div");
+    options.className = "likert-dots";
+
+    likertOptions.forEach((opt) => {
+      const name = `q${q.id}`;
+      const id = `${name}_${opt.value}`;
+
+      const label = document.createElement("label");
+      label.className = "likert-dot";
+
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = name;
+      input.value = String(opt.value);
+      input.id = id;
+
+      const circle = document.createElement("span");
+      circle.className = "dot-circle"; // ●の見た目
+
+      label.appendChild(input);
+      label.appendChild(circle);
+      options.appendChild(label);
+    });
+
+    // 右側のラベル（B側）
+    const rightLabel = document.createElement("div");
+    rightLabel.className = "likert-side-label";
+    rightLabel.textContent = "B";
+
+    wrapper.appendChild(leftLabel);
+    wrapper.appendChild(options);
+    wrapper.appendChild(rightLabel);
+
+    qDiv.appendChild(title);
+    qDiv.appendChild(wrapper);
+    questionsContainer.appendChild(qDiv);
+  });
+}
+
 
 function renderQuestions() {
   questionsContainer.innerHTML = "";
