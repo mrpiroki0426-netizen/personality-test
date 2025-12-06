@@ -4,52 +4,7 @@
   <meta charset="UTF-8" />
   <title>性格診断 結果</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f5f7;
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
-      text-align: center;
-    }
-    h1 {
-      margin-top: 0;
-      font-size: 1.4rem;
-    }
-    .type {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #1d4ed8;
-      margin-bottom: 8px;
-    }
-    .description {
-      white-space: pre-line;
-      text-align: left;
-      margin-top: 12px;
-      line-height: 1.7;
-    }
-    .back {
-      margin-top: 20px;
-    }
-    .back a {
-      text-decoration: none;
-      padding: 8px 18px;
-      border-radius: 999px;
-      background: #2563eb;
-      color: #fff;
-      font-size: 0.9rem;
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-    }
-  </style>
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
   <div class="container">
@@ -62,52 +17,9 @@
     </div>
   </div>
 
-  <script>
-    // index.html と同じ personalityTypes をここにも定義
-    const personalityTypes = {
-      A: {
-        label: "Aタイプ：リーダーシップ型",
-        description:
-          "行動力があり、決断も早いタイプです。\n" +
-          "周りを引っ張る役割になることが多く、\n" +
-          "プロジェクトの推進役として力を発揮します。"
-      },
-      B: {
-        label: "Bタイプ：ムードメーカー型",
-        description:
-          "明るく社交的で、場の雰囲気を和ませるタイプです。\n" +
-          "人との関わりからエネルギーをもらいやすく、\n" +
-          "チームの潤滑油として活躍します。"
-      },
-      C: {
-        label: "Cタイプ：マイペース研究型",
-        description:
-          "一人でじっくり考えたり、深く掘り下げることが得意です。\n" +
-          "感情に流されにくく、冷静な分析力を持っています。"
-      },
-      D: {
-        label: "Dタイプ：サポート・調整型",
-        description:
-          "相手の気持ちをよく考え、気配りができるタイプです。\n" +
-          "チーム全体のバランスを見ながら、\n" +
-          "細かいフォローができる貴重な存在です。"
-      }
-    };
-
-    // URLパラメータから type を取得
-    function getTypeFromQuery() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get("type"); // "A" / "B" / "C" / "D" のどれか
-    }
-
-    const type = getTypeFromQuery();
-    const typeInfo = personalityTypes[type] || {
-      label: "タイプ不明",
-      description: "URLが正しくありません。もう一度診断を行ってください。"
-    };
-
-    document.getElementById("typeLabel").textContent = typeInfo.label;
-    document.getElementById("description").textContent = typeInfo.description;
-  </script>
+  <!-- 設定（タイプ & 質問） -->
+  <script src="./js/config.js"></script>
+  <!-- 結果表示用スクリプト -->
+  <script src="./js/result.js"></script>
 </body>
 </html>
