@@ -1,390 +1,46 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8" />
-    <title>性格診断テスト</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-        /* ====== 全体レイアウト ====== */
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #f5f5f7;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            margin-top: 0;
-            text-align: center;
-        }
-
-        p.description {
-            text-align: center;
-            color: #555;
-            font-size: 0.9rem;
-            margin-bottom: 24px;
-        }
-
-        /* ====== 質問ブロック ====== */
-        .question {
-            margin-bottom: 20px;
-            padding: 16px;
-            border-radius: 12px;
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-        }
-
-        .question-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            font-size: 0.95rem;
-        }
-
-        .options.likert {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
-          margin-top: 8px;
-        }
-
-.likert-option {
-  flex: 1 1 calc(20% - 8px); /* 5つなら 20% ベース */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8px 4px;
-  border-radius: 999px;
-  border: 1px solid #d1d5db;
-  background: #ffffff;
-  font-size: 0.75rem;
-  cursor: pointer;
-  text-align: center;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease,
-    box-shadow 0.15s ease;
-}
-
-/* 中のラジオボタンは非表示にして、ラベルだけ見せる */
-.likert-option input {
-  display: none;
-}
-
-.likert-option span {
-  padding: 2px 4px;
-}
-
-/* 選択されたときのスタイル */
-.likert-option input:checked + span {
-  background: #2563eb;
-  color: #ffffff;
-  border-radius: 999px;
-  box-shadow: 0 0 0 1px #2563eb;
-}
-
-
-            .options label {
-                cursor: pointer;
-            }
-
-        /* ====== ボタン ====== */
-        .actions {
-            text-align: center;
-            margin-top: 24px;
-            margin-bottom: 12px;
-        }
-
-        button {
-            padding: 10px 24px;
-            font-size: 1rem;
-            border-radius: 999px;
-            border: none;
-            cursor: pointer;
-            background: #2563eb;
-            color: #ffffff;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
-            transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
-        }
-
-            button:active {
-                transform: translateY(1px);
-                box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
-            }
-
-            button:disabled {
-                opacity: 0.6;
-                cursor: not-allowed;
-                box-shadow: none;
-            }
-
-        /* ====== メッセージ & 結果 ====== */
-        .message {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #b91c1c;
-            min-height: 1.2em;
-            margin-bottom: 8px;
-        }
-
-        .result {
-            margin-top: 16px;
-            padding: 16px;
-            border-radius: 12px;
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            display: none; /* 診断前は非表示 */
-        }
-
-        .result-title {
-            font-weight: 700;
-            margin-bottom: 6px;
-            font-size: 1.05rem;
-        }
-
-        .result-type {
-            font-weight: 700;
-            color: #1d4ed8;
-        }
-
-        .result-description {
-            margin-top: 4px;
-            white-space: pre-line; /* \n を改行として表示 */
-        }
-
-        .footer {
-            margin-top: 24px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #9ca3af;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>性格診断テスト</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- 外部CSS -->
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>性格診断テスト</h1>
-        <p class="description">
-            直感で近いと思う選択肢を選んでください。<br />
-            診断結果はあくまで簡易的なものです。
-        </p>
+  <div class="container">
+    <h1>性格診断テスト</h1>
+    <p class="description">
+      直感で近いと思う選択肢を選んでください。<br />
+      診断結果はあくまで簡易的なものです。
+    </p>
 
-        <!-- 診断メッセージ -->
-        <div id="message" class="message"></div>
+    <!-- 診断メッセージ -->
+    <div id="message" class="message"></div>
 
-        <!-- 質問を表示するコンテナ -->
-        <div id="questions"></div>
+    <!-- 質問を表示するコンテナ -->
+    <div id="questions"></div>
 
-        <!-- ボタン -->
-        <div class="actions">
-            <button id="submitBtn">診断する</button>
-        </div>
-
-        <!-- 結果表示エリア -->
-        <div id="result" class="result">
-            <div class="result-title">あなたのタイプ：</div>
-            <div class="result-type" id="resultType"></div>
-            <div class="result-description" id="resultDescription"></div>
-        </div>
-
-        <div class="footer">
-            © 2025 性格診断テスト（デモ）
-        </div>
+    <!-- ボタン -->
+    <div class="actions">
+      <button id="submitBtn">診断する</button>
     </div>
 
-    <script>
-        // ====== ここを編集すれば、質問と結果の中身を差し替えられます ======
+    <!-- 結果表示エリア（indexでは使わず、result.htmlに飛ぶ） -->
+    <div id="result" class="result">
+      <div class="result-title">あなたのタイプ：</div>
+      <div class="result-type" id="resultType"></div>
+      <div class="result-description" id="resultDescription"></div>
+    </div>
 
-        // タイプ定義（キーと表示名・説明文）
-        // ▼ タイプ定義はそのままでOK
-const personalityTypes = {
-  A: {
-    label: "Aタイプ：リーダーシップ型",
-    description:
-      "行動力があり、決断も早いタイプです。\n" +
-      "周りを引っ張る役割になることが多く、\n" +
-      "プロジェクトの推進役として力を発揮します。"
-  },
-  B: {
-    label: "Bタイプ：ムードメーカー型",
-    description:
-      "明るく社交的で、場の雰囲気を和ませるタイプです。\n" +
-      "人との関わりからエネルギーをもらいやすく、\n" +
-      "チームの潤滑油として活躍します。"
-  },
-  C: {
-    label: "Cタイプ：マイペース研究型",
-    description:
-      "一人でじっくり考えたり、深く掘り下げることが得意です。\n" +
-      "感情に流されにくく、冷静な分析力を持っています。"
-  },
-  D: {
-    label: "Dタイプ：サポート・調整型",
-    description:
-      "相手の気持ちをよく考え、気配りができるタイプです。\n" +
-      "チーム全体のバランスを見ながら、\n" +
-      "細かいフォローができる貴重な存在です。"
-  }
-};
+    <div class="footer">
+      © 2025 性格診断テスト（デモ）
+    </div>
+  </div>
 
-// ▼ 各質問が “どのタイプの指標か” を targetType で指定
-const questions = [
-  {
-    id: 1,
-    text: "新しいことに挑戦するとき、ワクワク感の方が不安よりも強い。",
-    targetType: "A" // この質問は Aタイプの指標
-  },
-  {
-    id: 2,
-    text: "人と話していると、つい場を盛り上げようとしてしまう。",
-    targetType: "B"
-  },
-  {
-    id: 3,
-    text: "一人で考え込んだり、情報を調べる時間がとても好きだ。",
-    targetType: "C"
-  },
-  {
-    id: 4,
-    text: "チームの中で、誰かが困っていないかつい気になってしまう。",
-    targetType: "D"
-  },
-  {
-    id: 5,
-    text: "多少リスクがあっても、チャンスだと思えば行動するほうだ。",
-    targetType: "A"
-  }
-];
-
-
-        // ====== 質問を画面に描画 ======
-       const questionsContainer = document.getElementById("questions");
-
-// 5段階の共通選択肢
-const likertOptions = [
-  { value: 5, label: "とてもあてはまる" },
-  { value: 4, label: "まああてはまる" },
-  { value: 3, label: "どちらともいえない" },
-  { value: 2, label: "あまりあてはまらない" },
-  { value: 1, label: "まったくあてはまらない" }
-];
-
-function renderQuestions() {
-  questionsContainer.innerHTML = "";
-
-  questions.forEach((q, index) => {
-    const qDiv = document.createElement("div");
-    qDiv.className = "question";
-
-    const title = document.createElement("div");
-    title.className = "question-title";
-    title.textContent = `Q${index + 1}. ${q.text}`;
-
-    const optionsDiv = document.createElement("div");
-    optionsDiv.className = "options likert";
-
-    likertOptions.forEach((opt) => {
-      const name = `q${q.id}`;
-      const id = `${name}_${opt.value}`;
-
-      const label = document.createElement("label");
-      label.className = "likert-option";
-
-      const input = document.createElement("input");
-      input.type = "radio";
-      input.name = name;
-      input.value = String(opt.value);
-
-      const span = document.createElement("span");
-      span.textContent = opt.label;
-
-      label.appendChild(input);
-      label.appendChild(span);
-      optionsDiv.appendChild(label);
-    });
-
-    qDiv.appendChild(title);
-    qDiv.appendChild(optionsDiv);
-    questionsContainer.appendChild(qDiv);
-  });
-}
-
-// ページ読み込み時に質問を描画
-renderQuestions();
-
-
-        renderQuestions();
-
-        // ====== 診断ロジック ======
-        const submitBtn = document.getElementById("submitBtn");
-const messageEl = document.getElementById("message");
-const resultEl = document.getElementById("result");
-const resultTypeEl = document.getElementById("resultType");
-const resultDescriptionEl = document.getElementById("resultDescription");
-
-function diagnose() {
-  messageEl.textContent = "";
-  resultEl.style.display = "none";
-
-  // A/B/C/D のスコア
-  const scores = { A: 0, B: 0, C: 0, D: 0 };
-
-  for (const q of questions) {
-    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
-    if (!selected) {
-      messageEl.textContent = "未回答の質問があります。すべて回答してください。";
-      return;
-    }
-
-    const value = Number(selected.value); // 1〜5
-    const type = q.targetType;           // "A" 等
-
-    if (!scores.hasOwnProperty(type)) {
-      console.warn("未知のタイプ:", type);
-      continue;
-    }
-
-    scores[type] += value;
-  }
-
-  // 一番スコアが高いタイプを選ぶ
-  let topType = null;
-  let topScore = -Infinity;
-  for (const [type, score] of Object.entries(scores)) {
-    if (score > topScore) {
-      topType = type;
-      topScore = score;
-    }
-  }
-
-  const typeInfo = personalityTypes[topType];
-  if (!typeInfo) {
-    messageEl.textContent = "診断中にエラーが発生しました。";
-    return;
-  }
-
-  const url = `result.html?type=${encodeURIComponent(topType)}`;
-      window.location.href = url;
-}
-
-submitBtn.addEventListener("click", diagnose);
-
-    </script>
+  <!-- 設定（タイプ & 質問） -->
+  <script src="./js/config.js"></script>
+  <!-- 質問描画 & 診断処理 -->
+  <script src="./js/index.js"></script>
 </body>
 </html>
-
-
-
