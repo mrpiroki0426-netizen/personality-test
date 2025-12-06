@@ -376,9 +376,8 @@ function diagnose() {
     return;
   }
 
-  resultTypeEl.textContent = typeInfo.label;
-  resultDescriptionEl.textContent = typeInfo.description;
-  resultEl.style.display = "block";
+  const url = `result.html?type=${encodeURIComponent(topType)}`;
+      window.location.href = url;
 }
 
 submitBtn.addEventListener("click", diagnose);
@@ -386,5 +385,6 @@ submitBtn.addEventListener("click", diagnose);
     </script>
 </body>
 </html>
+
 
 
