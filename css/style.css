@@ -197,4 +197,57 @@ button:disabled {
   font-size: 0.8rem;
   color: #9ca3af;
 }
+/* 横並び（A ○ ○ ○ ○ ○ B） */
+.likert-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+/* 左右の A / B のラベル */
+.likert-side-label {
+  width: 40px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* ● が並ぶ中央部分 */
+.likert-dots {
+  display: flex;
+  gap: 16px; /* 丸同士の間隔 */
+  justify-content: center;
+  flex-grow: 1;
+}
+
+/* 丸の外枠 */
+.likert-dot {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ラジオ本体は隠す */
+.likert-dot input {
+  display: none;
+}
+
+/* ●の見た目（未選択状態：白円） */
+.dot-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 3px solid #d1d5db; /* 薄いグレー */
+  background: white;
+  transition: all 0.2s ease;
+}
+
+/* ● 選択時の色（左〜右でグラデーション） */
+.likert-dot input:checked + .dot-circle {
+  background: #ec4899; /* デフォルト：A側ピンク */
+  border-color: #ec4899;
+  transform: scale(1.15);
+}
 
