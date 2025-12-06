@@ -3,7 +3,6 @@
 // 質問コンテナ
 const questionsContainer = document.getElementById("questions");
 
-// 5段階の共通選択肢
 // 5段階の共通選択肢（左：A 〜 右：B）
 const likertOptions = [
   { value: 1, label: "" },
@@ -69,48 +68,6 @@ function renderQuestions() {
 
     qDiv.appendChild(title);
     qDiv.appendChild(wrapper);
-    questionsContainer.appendChild(qDiv);
-  });
-}
-
-
-function renderQuestions() {
-  questionsContainer.innerHTML = "";
-
-  questions.forEach((q, index) => {
-    const qDiv = document.createElement("div");
-    qDiv.className = "question";
-
-    const title = document.createElement("div");
-    title.className = "question-title";
-    title.textContent = `Q${index + 1}. ${q.text}`;
-
-    const optionsDiv = document.createElement("div");
-    optionsDiv.className = "options likert";
-
-    likertOptions.forEach((opt) => {
-      const name = `q${q.id}`;
-      const id = `${name}_${opt.value}`;
-
-      const label = document.createElement("label");
-      label.className = "likert-option";
-
-      const input = document.createElement("input");
-      input.type = "radio";
-      input.name = name;
-      input.value = String(opt.value);
-      input.id = id;
-
-      const span = document.createElement("span");
-      span.textContent = opt.label;
-
-      label.appendChild(input);
-      label.appendChild(span);
-      optionsDiv.appendChild(label);
-    });
-
-    qDiv.appendChild(title);
-    qDiv.appendChild(optionsDiv);
     questionsContainer.appendChild(qDiv);
   });
 }
