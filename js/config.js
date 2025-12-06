@@ -8,7 +8,7 @@ const personalityTypes = {
       "行動力があり、決断も早いタイプです。\n" +
       "周りを引っ張る役割になることが多く、\n" +
       "プロジェクトの推進役として力を発揮します。",
-    image: "img/type-A.png"
+    image: "img/type_A.png"
   },
   B: {
     label: "Bタイプ：ムードメーカー型",
@@ -16,14 +16,14 @@ const personalityTypes = {
       "明るく社交的で、場の雰囲気を和ませるタイプです。\n" +
       "人との関わりからエネルギーをもらいやすく、\n" +
       "チームの潤滑油として活躍します。",
-    image: "img/type-B.png"
+    image: "img/type_B.png"
   },
   C: {
     label: "Cタイプ：マイペース研究型",
     description:
       "一人でじっくり考えたり、深く掘り下げることが得意です。\n" +
       "感情に流されにくく、冷静な分析力を持っています。",
-    image: "img/type-C.png"
+    image: "img/type_C.png"
   },
   D: {
     label: "Dタイプ：サポート・調整型",
@@ -31,7 +31,7 @@ const personalityTypes = {
       "相手の気持ちをよく考え、気配りができるタイプです。\n" +
       "チーム全体のバランスを見ながら、\n" +
       "細かいフォローができる貴重な存在です。",
-    image: "img/type-D.png"
+    image: "img/type_D.png"
   }
 };
 
