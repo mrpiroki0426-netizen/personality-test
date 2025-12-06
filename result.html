@@ -9,6 +9,12 @@
 <body>
   <div class="container">
     <h1>性格診断 結果</h1>
+
+    <!-- ★ここを追加：キャラクター用 -->
+    <div class="character-wrap">
+      <img id="characterImage" class="character-image" alt="タイプキャラクター" />
+    </div>
+
     <div id="typeLabel" class="type"></div>
     <div id="description" class="description"></div>
 
@@ -17,9 +23,11 @@
     </div>
   </div>
 
+
   <!-- 設定（タイプ & 質問） -->
   <script src="./js/config.js"></script>
   <!-- 結果表示用スクリプト -->
   <script src="./js/result.js"></script>
 </body>
 </html>
+
