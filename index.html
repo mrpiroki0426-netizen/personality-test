@@ -57,48 +57,49 @@
         }
 
         .options.likert {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-top: 8px;
         }
 
-        .likert-option {
-            flex: 1 1 calc(20% - 8px); /* 5つなら 20% ベース */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 8px 4px;
-            border-radius: 999px;
-            border: 1px solid #d1d5db;
-            background: #ffffff;
-            font-size: 0.75rem;
-            cursor: pointer;
-            text-align: center;
-            transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease,
-                box-shadow 0.15s ease;
-        }
+.likert-option {
+  flex: 1 1 calc(20% - 8px); /* 5つなら 20% ベース */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 4px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  font-size: 0.75rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
 
-        /* 中のラジオボタンは非表示にして、ラベルだけ見せる */
-        .likert-option input {
-            display: none;
-        }
+/* 中のラジオボタンは非表示にして、ラベルだけ見せる */
+.likert-option input {
+  display: none;
+}
 
-        .likert-option span {
-            padding: 2px 4px;
-        }
+.likert-option span {
+  padding: 2px 4px;
+}
 
-        /* 選択されたときのスタイル */
-        .likert-option input:checked + span {
-            background: #2563eb;
-            color: #ffffff;
-            border-radius: 999px;
-            box-shadow: 0 0 0 1px #2563eb;
-        }
+/* 選択されたときのスタイル */
+.likert-option input:checked + span {
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px #2563eb;
+}
 
-        .options label {
-            cursor: pointer;
-        }
+
+            .options label {
+                cursor: pointer;
+            }
 
         /* ====== ボタン ====== */
         .actions {
@@ -120,16 +121,16 @@
             transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
         }
 
-        button:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
-        }
+            button:active {
+                transform: translateY(1px);
+                box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+            }
 
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
+            button:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                box-shadow: none;
+            }
 
         /* ====== メッセージ & 結果 ====== */
         .message {
@@ -205,176 +206,185 @@
     </div>
 
     <script>
-        // ====== タイプ定義 ======
-        const personalityTypes = {
-            A: {
-                label: "Aタイプ：リーダーシップ型",
-                description:
-                    "行動力があり、決断も早いタイプです。\n" +
-                    "周りを引っ張る役割になることが多く、\n" +
-                    "プロジェクトの推進役として力を発揮します。"
-            },
-            B: {
-                label: "Bタイプ：ムードメーカー型",
-                description:
-                    "明るく社交的で、場の雰囲気を和ませるタイプです。\n" +
-                    "人との関わりからエネルギーをもらいやすく、\n" +
-                    "チームの潤滑油として活躍します。"
-            },
-            C: {
-                label: "Cタイプ：マイペース研究型",
-                description:
-                    "一人でじっくり考えたり、深く掘り下げることが得意です。\n" +
-                    "感情に流されにくく、冷静な分析力を持っています。"
-            },
-            D: {
-                label: "Dタイプ：サポート・調整型",
-                description:
-                    "相手の気持ちをよく考え、気配りができるタイプです。\n" +
-                    "チーム全体のバランスを見ながら、\n" +
-                    "細かいフォローができる貴重な存在です。"
-            }
-        };
+        // ====== ここを編集すれば、質問と結果の中身を差し替えられます ======
 
-        // ====== 質問定義（各質問がどのタイプの指標か） ======
-        const questions = [
-            {
-                id: 1,
-                text: "新しいことに挑戦するとき、ワクワク感の方が不安よりも強い。",
-                targetType: "A"
-            },
-            {
-                id: 2,
-                text: "人と話していると、つい場を盛り上げようとしてしまう。",
-                targetType: "B"
-            },
-            {
-                id: 3,
-                text: "一人で考え込んだり、情報を調べる時間がとても好きだ。",
-                targetType: "C"
-            },
-            {
-                id: 4,
-                text: "チームの中で、誰かが困っていないかつい気になってしまう。",
-                targetType: "D"
-            },
-            {
-                id: 5,
-                text: "多少リスクがあっても、チャンスだと思えば行動するほうだ。",
-                targetType: "A"
-            }
-        ];
+        // タイプ定義（キーと表示名・説明文）
+        // ▼ タイプ定義はそのままでOK
+const personalityTypes = {
+  A: {
+    label: "Aタイプ：リーダーシップ型",
+    description:
+      "行動力があり、決断も早いタイプです。\n" +
+      "周りを引っ張る役割になることが多く、\n" +
+      "プロジェクトの推進役として力を発揮します。"
+  },
+  B: {
+    label: "Bタイプ：ムードメーカー型",
+    description:
+      "明るく社交的で、場の雰囲気を和ませるタイプです。\n" +
+      "人との関わりからエネルギーをもらいやすく、\n" +
+      "チームの潤滑油として活躍します。"
+  },
+  C: {
+    label: "Cタイプ：マイペース研究型",
+    description:
+      "一人でじっくり考えたり、深く掘り下げることが得意です。\n" +
+      "感情に流されにくく、冷静な分析力を持っています。"
+  },
+  D: {
+    label: "Dタイプ：サポート・調整型",
+    description:
+      "相手の気持ちをよく考え、気配りができるタイプです。\n" +
+      "チーム全体のバランスを見ながら、\n" +
+      "細かいフォローができる貴重な存在です。"
+  }
+};
+
+// ▼ 各質問が “どのタイプの指標か” を targetType で指定
+const questions = [
+  {
+    id: 1,
+    text: "新しいことに挑戦するとき、ワクワク感の方が不安よりも強い。",
+    targetType: "A" // この質問は Aタイプの指標
+  },
+  {
+    id: 2,
+    text: "人と話していると、つい場を盛り上げようとしてしまう。",
+    targetType: "B"
+  },
+  {
+    id: 3,
+    text: "一人で考え込んだり、情報を調べる時間がとても好きだ。",
+    targetType: "C"
+  },
+  {
+    id: 4,
+    text: "チームの中で、誰かが困っていないかつい気になってしまう。",
+    targetType: "D"
+  },
+  {
+    id: 5,
+    text: "多少リスクがあっても、チャンスだと思えば行動するほうだ。",
+    targetType: "A"
+  }
+];
+
 
         // ====== 質問を画面に描画 ======
-        const questionsContainer = document.getElementById("questions");
+       const questionsContainer = document.getElementById("questions");
 
-        // 5段階の共通選択肢
-        const likertOptions = [
-            { value: 5, label: "とてもあてはまる" },
-            { value: 4, label: "まああてはまる" },
-            { value: 3, label: "どちらともいえない" },
-            { value: 2, label: "あまりあてはまらない" },
-            { value: 1, label: "まったくあてはまらない" }
-        ];
+// 5段階の共通選択肢
+const likertOptions = [
+  { value: 5, label: "とてもあてはまる" },
+  { value: 4, label: "まああてはまる" },
+  { value: 3, label: "どちらともいえない" },
+  { value: 2, label: "あまりあてはまらない" },
+  { value: 1, label: "まったくあてはまらない" }
+];
 
-        function renderQuestions() {
-            questionsContainer.innerHTML = "";
+function renderQuestions() {
+  questionsContainer.innerHTML = "";
 
-            questions.forEach((q, index) => {
-                const qDiv = document.createElement("div");
-                qDiv.className = "question";
+  questions.forEach((q, index) => {
+    const qDiv = document.createElement("div");
+    qDiv.className = "question";
 
-                const title = document.createElement("div");
-                title.className = "question-title";
-                title.textContent = `Q${index + 1}. ${q.text}`;
+    const title = document.createElement("div");
+    title.className = "question-title";
+    title.textContent = `Q${index + 1}. ${q.text}`;
 
-                const optionsDiv = document.createElement("div");
-                optionsDiv.className = "options likert";
+    const optionsDiv = document.createElement("div");
+    optionsDiv.className = "options likert";
 
-                likertOptions.forEach((opt) => {
-                    const name = `q${q.id}`;
-                    const id = `${name}_${opt.value}`;
+    likertOptions.forEach((opt) => {
+      const name = `q${q.id}`;
+      const id = `${name}_${opt.value}`;
 
-                    const label = document.createElement("label");
-                    label.className = "likert-option";
+      const label = document.createElement("label");
+      label.className = "likert-option";
 
-                    const input = document.createElement("input");
-                    input.type = "radio";
-                    input.name = name;
-                    input.value = String(opt.value);
-                    input.id = id;
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = name;
+      input.value = String(opt.value);
 
-                    const span = document.createElement("span");
-                    span.textContent = opt.label;
+      const span = document.createElement("span");
+      span.textContent = opt.label;
 
-                    label.appendChild(input);
-                    label.appendChild(span);
-                    optionsDiv.appendChild(label);
-                });
+      label.appendChild(input);
+      label.appendChild(span);
+      optionsDiv.appendChild(label);
+    });
 
-                qDiv.appendChild(title);
-                qDiv.appendChild(optionsDiv);
-                questionsContainer.appendChild(qDiv);
-            });
-        }
+    qDiv.appendChild(title);
+    qDiv.appendChild(optionsDiv);
+    questionsContainer.appendChild(qDiv);
+  });
+}
 
-        // ページ読み込み時に質問を描画
+// ページ読み込み時に質問を描画
+renderQuestions();
+
+
         renderQuestions();
 
         // ====== 診断ロジック ======
         const submitBtn = document.getElementById("submitBtn");
-        const messageEl = document.getElementById("message");
-        const resultEl = document.getElementById("result");
-        const resultTypeEl = document.getElementById("resultType");
-        const resultDescriptionEl = document.getElementById("resultDescription");
+const messageEl = document.getElementById("message");
+const resultEl = document.getElementById("result");
+const resultTypeEl = document.getElementById("resultType");
+const resultDescriptionEl = document.getElementById("resultDescription");
 
-        function diagnose() {
-            messageEl.textContent = "";
-            resultEl.style.display = "none";
+function diagnose() {
+  messageEl.textContent = "";
+  resultEl.style.display = "none";
 
-            // A/B/C/D のスコア
-            const scores = { A: 0, B: 0, C: 0, D: 0 };
+  // A/B/C/D のスコア
+  const scores = { A: 0, B: 0, C: 0, D: 0 };
 
-            for (const q of questions) {
-                const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
-                if (!selected) {
-                    messageEl.textContent = "未回答の質問があります。すべて回答してください。";
-                    return;
-                }
+  for (const q of questions) {
+    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+    if (!selected) {
+      messageEl.textContent = "未回答の質問があります。すべて回答してください。";
+      return;
+    }
 
-                const value = Number(selected.value); // 1〜5
-                const type = q.targetType;           // "A" など
+    const value = Number(selected.value); // 1〜5
+    const type = q.targetType;           // "A" 等
 
-                if (!scores.hasOwnProperty(type)) {
-                    console.warn("未知のタイプ:", type);
-                    continue;
-                }
+    if (!scores.hasOwnProperty(type)) {
+      console.warn("未知のタイプ:", type);
+      continue;
+    }
 
-                scores[type] += value;
-            }
+    scores[type] += value;
+  }
 
-            // 一番スコアが高いタイプを選ぶ
-            let topType = null;
-            let topScore = -Infinity;
-            for (const [type, score] of Object.entries(scores)) {
-                if (score > topScore) {
-                    topType = type;
-                    topScore = score;
-                }
-            }
+  // 一番スコアが高いタイプを選ぶ
+  let topType = null;
+  let topScore = -Infinity;
+  for (const [type, score] of Object.entries(scores)) {
+    if (score > topScore) {
+      topType = type;
+      topScore = score;
+    }
+  }
 
-            const typeInfo = personalityTypes[topType];
-            if (!typeInfo) {
-                messageEl.textContent = "診断中にエラーが発生しました。";
-                return;
-            }
+  const typeInfo = personalityTypes[topType];
+  if (!typeInfo) {
+    messageEl.textContent = "診断中にエラーが発生しました。";
+    return;
+  }
 
-            resultTypeEl.textContent = typeInfo.label;
-            resultDescriptionEl.textContent = typeInfo.description;
-            resultEl.style.display = "block";
-        }
+  resultTypeEl.textContent = typeInfo.label;
+  resultDescriptionEl.textContent = typeInfo.description;
+  resultEl.style.display = "block";
+}
 
-        submitBtn.addEventListener("click", diagnose);
+submitBtn.addEventListener("click", diagnose);
+
     </script>
 </body>
 </html>
+
+
