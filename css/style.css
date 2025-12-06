@@ -251,3 +251,14 @@ button:disabled {
   transform: scale(1.15);
 }
 
+.character-wrap {
+  margin: 12px auto 16px;
+}
+
+.character-image {
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
