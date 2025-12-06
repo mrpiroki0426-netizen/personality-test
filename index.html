@@ -56,6 +56,47 @@
             font-size: 0.95rem;
         }
 
+        .options.likert {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-top: 8px;
+        }
+
+.likert-option {
+  flex: 1 1 calc(20% - 8px); /* 5つなら 20% ベース */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 4px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  font-size: 0.75rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+/* 中のラジオボタンは非表示にして、ラベルだけ見せる */
+.likert-option input {
+  display: none;
+}
+
+.likert-option span {
+  padding: 2px 4px;
+}
+
+/* 選択されたときのスタイル */
+.likert-option input:checked + span {
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px #2563eb;
+}
+
+
             .options label {
                 cursor: pointer;
             }
@@ -168,181 +209,184 @@
         // ====== ここを編集すれば、質問と結果の中身を差し替えられます ======
 
         // タイプ定義（キーと表示名・説明文）
-        const personalityTypes = {
-            A: {
-                label: "Aタイプ：リーダーシップ型",
-                description:
-                    "行動力があり、決断も早いタイプです。\n" +
-                    "周りを引っ張る役割になることが多く、\n" +
-                    "プロジェクトの推進役として力を発揮します。"
-            },
-            B: {
-                label: "Bタイプ：ムードメーカー型",
-                description:
-                    "明るく社交的で、場の雰囲気を和ませるタイプです。\n" +
-                    "人との関わりからエネルギーをもらいやすく、\n" +
-                    "チームの潤滑油として活躍します。"
-            },
-            C: {
-                label: "Cタイプ：マイペース研究型",
-                description:
-                    "一人でじっくり考えたり、深く掘り下げることが得意です。\n" +
-                    "感情に流されにくく、冷静な分析力を持っています。"
-            },
-            D: {
-                label: "Dタイプ：サポート・調整型",
-                description:
-                    "相手の気持ちをよく考え、気配りができるタイプです。\n" +
-                    "チーム全体のバランスを見ながら、\n" +
-                    "細かいフォローができる貴重な存在です。"
-            }
-        };
+        // ▼ タイプ定義はそのままでOK
+const personalityTypes = {
+  A: {
+    label: "Aタイプ：リーダーシップ型",
+    description:
+      "行動力があり、決断も早いタイプです。\n" +
+      "周りを引っ張る役割になることが多く、\n" +
+      "プロジェクトの推進役として力を発揮します。"
+  },
+  B: {
+    label: "Bタイプ：ムードメーカー型",
+    description:
+      "明るく社交的で、場の雰囲気を和ませるタイプです。\n" +
+      "人との関わりからエネルギーをもらいやすく、\n" +
+      "チームの潤滑油として活躍します。"
+  },
+  C: {
+    label: "Cタイプ：マイペース研究型",
+    description:
+      "一人でじっくり考えたり、深く掘り下げることが得意です。\n" +
+      "感情に流されにくく、冷静な分析力を持っています。"
+  },
+  D: {
+    label: "Dタイプ：サポート・調整型",
+    description:
+      "相手の気持ちをよく考え、気配りができるタイプです。\n" +
+      "チーム全体のバランスを見ながら、\n" +
+      "細かいフォローができる貴重な存在です。"
+  }
+};
 
-        // 質問リスト（★ここを書き換えればオリジナル診断になる）
-        const questions = [
-            {
-                id: 1,
-                text: "休日の過ごし方として一番近いのは？",
-                options: [
-                    { value: "A", label: "とにかく予定を詰めて、いろいろな所に出かける" },
-                    { value: "B", label: "友達と集まってワイワイ過ごす" },
-                    { value: "C", label: "一人で趣味に没頭する" },
-                    { value: "D", label: "家族や身近な人とゆったり過ごす" }
-                ]
-            },
-            {
-                id: 2,
-                text: "新しいプロジェクトが始まるとき、あなたは？",
-                options: [
-                    { value: "A", label: "すぐに全体像を考えて仕切りたくなる" },
-                    { value: "B", label: "まずはみんなで話しながら雰囲気を作りたい" },
-                    { value: "C", label: "情報を集めて、自分なりに分析する" },
-                    { value: "D", label: "足りない役割を探して、サポートに回る" }
-                ]
-            },
-            {
-                id: 3,
-                text: "グループで意見が割れたとき、あなたは？",
-                options: [
-                    { value: "A", label: "最終的にどちらかを決める役を買って出る" },
-                    { value: "B", label: "冗談を交えながら場をなごませる" },
-                    { value: "C", label: "それぞれのメリット・デメリットを整理する" },
-                    { value: "D", label: "全員が納得できる落としどころを探る" }
-                ]
-            },
-            {
-                id: 4,
-                text: "初対面の人が多い場では…",
-                options: [
-                    { value: "A", label: "自分からどんどん話しかける" },
-                    { value: "B", label: "場の盛り上がりに合わせて会話を広げる" },
-                    { value: "C", label: "様子を見つつ、自然に話しかけられたら話す" },
-                    { value: "D", label: "少人数とじっくり話すほうが安心する" }
-                ]
-            },
-            {
-                id: 5,
-                text: "仕事や作業で一番大事だと思うのは？",
-                options: [
-                    { value: "A", label: "スピードと結果" },
-                    { value: "B", label: "周りとのコミュニケーション" },
-                    { value: "C", label: "クオリティと正確さ" },
-                    { value: "D", label: "みんなが気持ちよく働ける雰囲気" }
-                ]
-            }
-        ];
+// ▼ 各質問が “どのタイプの指標か” を targetType で指定
+const questions = [
+  {
+    id: 1,
+    text: "新しいことに挑戦するとき、ワクワク感の方が不安よりも強い。",
+    targetType: "A" // この質問は Aタイプの指標
+  },
+  {
+    id: 2,
+    text: "人と話していると、つい場を盛り上げようとしてしまう。",
+    targetType: "B"
+  },
+  {
+    id: 3,
+    text: "一人で考え込んだり、情報を調べる時間がとても好きだ。",
+    targetType: "C"
+  },
+  {
+    id: 4,
+    text: "チームの中で、誰かが困っていないかつい気になってしまう。",
+    targetType: "D"
+  },
+  {
+    id: 5,
+    text: "多少リスクがあっても、チャンスだと思えば行動するほうだ。",
+    targetType: "A"
+  }
+];
+
 
         // ====== 質問を画面に描画 ======
         const questionsContainer = document.getElementById("questions");
 
-        function renderQuestions() {
-            questionsContainer.innerHTML = "";
+       const questionsContainer = document.getElementById("questions");
 
-            questions.forEach((q, index) => {
-                const qDiv = document.createElement("div");
-                qDiv.className = "question";
+// 5段階の共通選択肢
+const likertOptions = [
+  { value: 5, label: "とてもあてはまる" },
+  { value: 4, label: "まああてはまる" },
+  { value: 3, label: "どちらともいえない" },
+  { value: 2, label: "あまりあてはまらない" },
+  { value: 1, label: "まったくあてはまらない" }
+];
 
-                const title = document.createElement("div");
-                title.className = "question-title";
-                title.textContent = `Q${index + 1}. ${q.text}`;
+function renderQuestions() {
+  questionsContainer.innerHTML = "";
 
-                const optionsDiv = document.createElement("div");
-                optionsDiv.className = "options";
+  questions.forEach((q, index) => {
+    const qDiv = document.createElement("div");
+    qDiv.className = "question";
 
-                q.options.forEach((opt) => {
-                    const id = `q${q.id}_${opt.value}`;
+    const title = document.createElement("div");
+    title.className = "question-title";
+    title.textContent = `Q${index + 1}. ${q.text}`;
 
-                    const label = document.createElement("label");
-                    const input = document.createElement("input");
-                    input.type = "radio";
-                    input.name = `q${q.id}`;
-                    input.value = opt.value;
-                    input.id = id;
+    const optionsDiv = document.createElement("div");
+    optionsDiv.className = "options likert";
 
-                    label.htmlFor = id;
-                    label.appendChild(input);
-                    label.appendChild(document.createTextNode(" " + opt.label));
+    likertOptions.forEach((opt) => {
+      const name = `q${q.id}`;
+      const id = `${name}_${opt.value}`;
 
-                    optionsDiv.appendChild(label);
-                });
+      const label = document.createElement("label");
+      label.className = "likert-option";
 
-                qDiv.appendChild(title);
-                qDiv.appendChild(optionsDiv);
-                questionsContainer.appendChild(qDiv);
-            });
-        }
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = name;
+      input.value = String(opt.value);
+
+      const span = document.createElement("span");
+      span.textContent = opt.label;
+
+      label.appendChild(input);
+      label.appendChild(span);
+      optionsDiv.appendChild(label);
+    });
+
+    qDiv.appendChild(title);
+    qDiv.appendChild(optionsDiv);
+    questionsContainer.appendChild(qDiv);
+  });
+}
+
+// ページ読み込み時に質問を描画
+renderQuestions();
+
 
         renderQuestions();
 
         // ====== 診断ロジック ======
         const submitBtn = document.getElementById("submitBtn");
-        const messageEl = document.getElementById("message");
-        const resultEl = document.getElementById("result");
-        const resultTypeEl = document.getElementById("resultType");
-        const resultDescriptionEl = document.getElementById("resultDescription");
+const messageEl = document.getElementById("message");
+const resultEl = document.getElementById("result");
+const resultTypeEl = document.getElementById("resultType");
+const resultDescriptionEl = document.getElementById("resultDescription");
 
-        function diagnose() {
-            messageEl.textContent = "";
-            resultEl.style.display = "none";
+function diagnose() {
+  messageEl.textContent = "";
+  resultEl.style.display = "none";
 
-            // 集計用のオブジェクト（A/B/C/Dの得点）
-            const scores = { A: 0, B: 0, C: 0, D: 0 };
+  // A/B/C/D のスコア
+  const scores = { A: 0, B: 0, C: 0, D: 0 };
 
-            // 各質問について回答を取得
-            for (const q of questions) {
-                const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
-                if (!selected) {
-                    messageEl.textContent = "未回答の質問があります。すべて回答してください。";
-                    return;
-                }
-                const type = selected.value;
-                scores[type] += 1;
-            }
+  for (const q of questions) {
+    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+    if (!selected) {
+      messageEl.textContent = "未回答の質問があります。すべて回答してください。";
+      return;
+    }
 
-            // 一番スコアが高いタイプを算出
-            let topType = null;
-            let topScore = -1;
-            for (const [type, score] of Object.entries(scores)) {
-                if (score > topScore) {
-                    topType = type;
-                    topScore = score;
-                }
-            }
+    const value = Number(selected.value); // 1〜5
+    const type = q.targetType;           // "A" 等
 
-            // タイプ情報を取得
-            const typeInfo = personalityTypes[topType];
-            if (!typeInfo) {
-                messageEl.textContent = "診断中にエラーが発生しました。";
-                return;
-            }
+    if (!scores.hasOwnProperty(type)) {
+      console.warn("未知のタイプ:", type);
+      continue;
+    }
 
-            // 結果表示
-            const url = `result.html?type=${encodeURIComponent(topType)}`;
-            window.location.href = url;
-        }
+    scores[type] += value;
+  }
 
-        submitBtn.addEventListener("click", diagnose);
+  // 一番スコアが高いタイプを選ぶ
+  let topType = null;
+  let topScore = -Infinity;
+  for (const [type, score] of Object.entries(scores)) {
+    if (score > topScore) {
+      topType = type;
+      topScore = score;
+    }
+  }
+
+  const typeInfo = personalityTypes[topType];
+  if (!typeInfo) {
+    messageEl.textContent = "診断中にエラーが発生しました。";
+    return;
+  }
+
+  resultTypeEl.textContent = typeInfo.label;
+  resultDescriptionEl.textContent = typeInfo.description;
+  resultEl.style.display = "block";
+}
+
+submitBtn.addEventListener("click", diagnose);
+
     </script>
 </body>
 </html>
+
 
