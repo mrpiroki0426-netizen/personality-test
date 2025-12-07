@@ -1,30 +1,32 @@
 // js/result.js
 
-// URLパラメータから type を取得
+// URLクエリから type（例: ESAH）を取得
 function getTypeFromQuery() {
   const params = new URLSearchParams(window.location.search);
-  return params.get("type"); // "A" / "B" / "C" / "D" のどれか
+  return params.get("type"); // "ESAH" など
 }
 
-    const type = getTypeFromQuery();
-    const typeInfo = personalityTypes[type] || {
-      label: "タイプ不明",
-      description: "URLが正しくありません。もう一度診断を行ってください。",
-      image: null
-    };
+document.addEventListener("DOMContentLoaded", () => {
+  const type = getTypeFromQuery();
 
-    // テキスト
-    document.getElementById("typeLabel").textContent = typeInfo.label;
-    document.getElementById("description").textContent = typeInfo.description;
+  // config.js で定義した personalityTypes から情報を取得
+  const typeInfo = personalityTypes[type] || {
+    label: "タイプ不明",
+    description: "URLが正しくありません。もう一度診断を行ってください。"
+  };
 
-    // ★ キャラクター画像
-    const characterImg = document.getElementById("characterImage");
-    if (typeInfo.image) {
-      characterImg.src = typeInfo.image;
-      characterImg.alt = typeInfo.label + "のキャラクター";
-      characterImg.style.display = "block";
-    } else {
-      // 画像が設定されていないタイプは非表示
-      characterImg.style.display = "none";
-    }
+  const typeLabelEl = document.getElementById("typeLabel");
+  const descriptionEl = document.getElementById("description");
 
+  if (!typeLabelEl || !descriptionEl) {
+    console.error("結果表示用の要素が見つかりません (typeLabel / description)");
+    return;
+  }
+
+  // 4文字コードも一緒に見せたい場合はこんな感じ
+  // typeLabelEl.textContent = `${type}：${typeInfo.label}`;
+  typeLabelEl.textContent = typeInfo.label;
+  descriptionEl.textContent = typeInfo.description;
+
+  console.log("診断結果タイプ:", type, typeInfo);
+});
